@@ -1,4 +1,4 @@
-import { Gender } from './types.ts'
+import { Gender, HealthCheckRating } from './types.ts'
 import {z} from 'zod'
 
 /* const isString = (text: unknown): text is string => {
@@ -42,6 +42,47 @@ export const newPatientSchema = z.object({
   occupation: z.string()
 })
 
+/* const Type = {
+  healthCheck: "HealthCheck",
+  hospital: "Hospital",
+  occupationalHealthcare: "OccupationalHealthcare"
+} as const
+
+type Type = typeof Type[keyof typeof Type]
+ */
+const newEntrySchema = {
+  date: z.iso.date(),
+  specialist: z.string(),
+  description: z.string(),
+}
+
+
+
+export const newHealthCheckSchema = z.object({
+  ...newEntrySchema,
+  type: z.literal("HealthCheck"),
+  healthCheckRating: z.union([
+    z.literal(HealthCheckRating.Healthy),
+    z.literal(HealthCheckRating.CriticalRisk),
+    z.literal(HealthCheckRating.LowRisk),
+    z.literal(HealthCheckRating.HighRisk),
+  ])
+})
+
+export const newHospitalSchema = z.object({
+  ...newEntrySchema,
+  type: z.literal("Hospital"),
+  discharge: z.object({
+    date: z.iso.date(),
+    criteria: z.string()
+  })
+})
+
+export const newOccupationalSchema = z.object({
+  ...newEntrySchema,
+  type: z.literal("OccupationalHealthcare"),
+  employerName: z.string()
+})
 /* const parseNewPatient = (object: unknown): NewPatient => {  
   return newPatientSchema.parse(object)
 } */
