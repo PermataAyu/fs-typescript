@@ -1,5 +1,5 @@
-import { Gender, HealthCheckRating } from './types.ts'
-import {z} from 'zod'
+import { Gender, HealthCheckRating } from './types.ts';
+import {z} from 'zod';
 
 /* const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -40,7 +40,7 @@ export const newPatientSchema = z.object({
   dateOfBirth: z.iso.date(),
   gender: z.enum(Gender),
   occupation: z.string()
-})
+});
 
 /* const Type = {
   healthCheck: "HealthCheck",
@@ -54,7 +54,7 @@ const newEntrySchema = {
   date: z.iso.date(),
   specialist: z.string(),
   description: z.string(),
-}
+};
 
 
 
@@ -67,7 +67,7 @@ export const newHealthCheckSchema = z.object({
     z.literal(HealthCheckRating.LowRisk),
     z.literal(HealthCheckRating.HighRisk),
   ])
-})
+});
 
 export const newHospitalSchema = z.object({
   ...newEntrySchema,
@@ -76,13 +76,13 @@ export const newHospitalSchema = z.object({
     date: z.iso.date(),
     criteria: z.string()
   })
-})
+});
 
 export const newOccupationalSchema = z.object({
   ...newEntrySchema,
   type: z.literal("OccupationalHealthcare"),
   employerName: z.string()
-})
+});
 /* const parseNewPatient = (object: unknown): NewPatient => {  
   return newPatientSchema.parse(object)
 } */

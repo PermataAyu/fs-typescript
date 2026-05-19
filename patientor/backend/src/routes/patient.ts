@@ -37,7 +37,7 @@ patientRouter.post('/', (req, res) => {
 
 patientRouter.post('/:id/entries', (req, res) => {
   try {
-    const type: string = req.body.type;
+    const type: string = req.body.type as string;
     const newEntry = type === "HealthCheck" ? newHealthCheckSchema.parse(req.body)
       : type === "OccupationalHealthcare" ? newOccupationalSchema.parse(req.body)
       : newHospitalSchema.parse(req.body);

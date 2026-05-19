@@ -1,22 +1,22 @@
-import type z from "zod"
-import type { newPatientSchema } from "./utils.ts"
+import type z from "zod";
+import type { newPatientSchema } from "./utils.ts";
 
 export const Gender = {
   Male: 'male',
   Female: 'female',
   Other: 'other'
-} as const
+} as const;
 
-export type Gender = typeof Gender[keyof typeof Gender]
+export type Gender = typeof Gender[keyof typeof Gender];
 
 export const HealthCheckRating = {
   Healthy: 0,
   LowRisk: 1,
   HighRisk: 2,
   CriticalRisk: 3,
-} as const
+} as const;
 
-export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating]
+export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 export interface Diagnoses {
   code: string,
@@ -54,11 +54,11 @@ interface HospitalEntry extends BaseEntry {
   }
 }
 
-type Entry = HealthCheckEntry | OccupationalHealthcareEntry | HospitalEntry
+export type Entry = HealthCheckEntry | OccupationalHealthcareEntry | HospitalEntry;
 
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K>: never;
 
-export type EntryNoId = UnionOmit<Entry, 'id'>
+export type EntryNoId = UnionOmit<Entry, 'id'>;
 
 export interface Patient {
   id: string,
