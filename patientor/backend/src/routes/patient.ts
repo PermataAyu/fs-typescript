@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {type Request, type Response} from 'express';
 import patientService from '../services/patientService.ts';
 import { newHealthCheckSchema, newHospitalSchema, newOccupationalSchema, newPatientSchema } from '../utils.ts';
 import z from 'zod';
@@ -37,7 +37,7 @@ patientRouter.post('/', (req, res) => {
 
 patientRouter.post('/:id/entries', (req, res) => {
   try {
-    const type: string = req.body.type as string;
+    const type = req.body.type as string;
     const newEntry = type === "HealthCheck" ? newHealthCheckSchema.parse(req.body)
       : type === "OccupationalHealthcare" ? newOccupationalSchema.parse(req.body)
       : newHospitalSchema.parse(req.body);

@@ -70,9 +70,9 @@ export interface Patient {
   entries: Entry[]
 }
 
-export type NoSsnPatient = Omit<Patient, 'ssn'>
+export type NoSsnPatient = Omit<Patient, 'ssn'>;
 
-export type NewPatient = z.infer<typeof newPatientSchema>
+export type NewPatient = z.infer<typeof newPatientSchema>;
 
 export interface Patient extends NewPatient {
   id: string
