@@ -1,4 +1,4 @@
-import { Alert, Autocomplete, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
+import { Alert, Autocomplete, Button, Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { SyntheticEvent, useState } from "react"
 import { Diagnosis, EntryNoId, HealthCheckRating } from "../types"
 
@@ -6,14 +6,16 @@ interface Props {
   diagnoses: Diagnosis[]
   onSubmit: (entry: EntryNoId) => void
   error?: string
+  modalOpen: boolean
+  onClose: () => void
 }
 
 const today = new Date().toJSON().slice(0, 10)
 
-const EntryForm = ({diagnoses, onSubmit, error}: Props) => {
+const EntryForm = ({diagnoses, onSubmit, error, modalOpen, onClose}: Props) => {
   const [date, setDate] = useState(today)
   const [dcode, setDcode] = useState<string[]>([])
-  const [type, setType] = useState('')
+  const [type, setType] = useState("HealthCheck")
   const [description, setDescription] = useState('')
   const [specialist, setSpecialist] = useState('')
   const [rating, setRating] = useState(HealthCheckRating.Healthy)
@@ -32,7 +34,7 @@ const EntryForm = ({diagnoses, onSubmit, error}: Props) => {
             <Select 
               required
               value={rating}
-              label="Entry Type"
+              label="Health Check Rating"
               onChange={(event) => setRating(event.target.value)}
             >
               <MenuItem value={HealthCheckRating.Healthy}>0 - Healthy</MenuItem>
@@ -125,12 +127,22 @@ const EntryForm = ({diagnoses, onSubmit, error}: Props) => {
           discharge: {date: discharge, criteria}
         })
     }
-
+    setDate(today)
+    setDescription('')
+    setType('')
+    setSpecialist('')
+    setDcode([])
+    setRating(HealthCheckRating.Healthy)
+    setWorkplace('')
+    setSickStart(today)
+    setSickEnd(today)
+    setDischarge(today)
+    setCriteria('')
   }
   
   return(
-    <Card sx={{borderStyle: "dashed", borderWidth: "2px"}}>
-      <CardContent>
+    <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose}>
+      <DialogContent>
         <form onSubmit={addEntry}>
           <Typography variant="h6" >New Entry</Typography>
           {error && <Alert severity="error">{error}</Alert>} 
@@ -190,12 +202,16 @@ const EntryForm = ({diagnoses, onSubmit, error}: Props) => {
             )}
           />
           {moreField(type)}
-          <Button variant='contained' color="primary" type="submit">
+          <Button variant='contained' color="primary" type="submit" sx={{marginRight: "5px"}}>
             Add
           </Button>
+          <Button variant="contained" color="error" onClick={onClose}>
+            Cancel
+          </Button>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
+    
   )
 }
 

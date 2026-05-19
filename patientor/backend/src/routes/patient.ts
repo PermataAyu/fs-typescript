@@ -11,14 +11,14 @@ patientRouter.get('/', (_req, res) => {
 });
 
 patientRouter.get('/:id', (req, res) => {
-  const data = patientService.getPatient(req.params.id)
+  const data = patientService.getPatient(req.params.id);
 
   if (data) {
-    res.send(data)
+    res.send(data);
   } else {
-    res.sendStatus(404)
+    res.sendStatus(404);
   }
-})
+});
 
 patientRouter.post('/', (req, res) => {
   try {

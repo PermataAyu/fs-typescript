@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import {MaleOutlined, FemaleOutlined, HelpOutlineOutlined} from "@mui/icons-material"
 import { Diagnosis, EntryNoId, type Patient } from "../types"
 import { useEffect, useState } from "react"
@@ -13,6 +13,7 @@ const PatientData = ({id}: {id: string | undefined}) => {
   const [patient, setPatient] = useState<Patient>()
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([])
   const [error, setError] = useState<string>()
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchPatientList = async () => {
@@ -28,6 +29,13 @@ const PatientData = ({id}: {id: string | undefined}) => {
     void fetchPatientList();
     void fetchDiagnosesList();
   }, [])
+
+  const openModal = () => setModalOpen(true)
+
+  const closeModal = () => {
+    setModalOpen(false)
+    setError('')
+  }
 
   const gender = (gender: string) => {
     if (gender === "male") {
@@ -53,6 +61,7 @@ const PatientData = ({id}: {id: string | undefined}) => {
         entries: patient.entries.concat(newEntry)
       }
       setPatient(updatePatient)
+      setModalOpen(false)
     } catch (e:unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "string") {
@@ -78,7 +87,13 @@ const PatientData = ({id}: {id: string | undefined}) => {
       {patient.entries.map(e => (
         <EntryDetails key={e.id} entry={e} diagnoses={diagnoses}/>
       ))}
-      <EntryForm diagnoses={diagnoses} onSubmit={submitNewEntry} error={error}/>
+      <Button variant="contained" onClick={() => openModal()}>Add New Entry</Button>
+      <EntryForm 
+        modalOpen={modalOpen} 
+        onClose={closeModal} 
+        diagnoses={diagnoses} 
+        onSubmit={submitNewEntry} 
+        error={error}/>
     </div>
   )
 }
