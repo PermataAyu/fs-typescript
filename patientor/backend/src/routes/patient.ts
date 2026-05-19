@@ -23,32 +23,32 @@ patientRouter.get('/:id', (req, res) => {
 patientRouter.post('/', (req, res) => {
   try {
     const newPatient = newPatientSchema.parse(req.body);
-    const addedPatient = patientService.addPatient(newPatient)
-    res.json(addedPatient)
+    const addedPatient = patientService.addPatient(newPatient);
+    res.json(addedPatient);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      res.status(400).send({error: error.issues})
+      res.status(400).send({error: error.issues});
     }
     else {
-      res.status(400).send({error: 'unknown error'})
+      res.status(400).send({error: 'unknown error'});
     }
   }
 });
 
 patientRouter.post('/:id/entries', (req, res) => {
   try {
-    const type = req.body.type
+    const type = req.body.type;
     const newEntry = type === "HealthCheck" ? newHealthCheckSchema.parse(req.body)
       : type === "OccupationalHealthcare" ? newOccupationalSchema.parse(req.body)
-      : newHospitalSchema.parse(req.body)
-    const addedEntry = patientService.addEntry(newEntry, req.params.id)
-    res.json(addedEntry)
+      : newHospitalSchema.parse(req.body);
+    const addedEntry = patientService.addEntry(newEntry, req.params.id);
+    res.json(addedEntry);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      res.status(400).send({error: error.issues})
+      res.status(400).send({error: error.issues});
     }
     else {
-      res.status(400).send({error: 'unknown error'})
+      res.status(400).send({error: 'unknown error'});
     }
   }
 }) 
